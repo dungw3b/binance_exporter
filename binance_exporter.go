@@ -44,9 +44,9 @@ func main() {
 
 	level.Info(logger).Log("msg", "Starting binance_exporter")
 
-	symbol := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "symbol",
-		Help: "binance symbol",
+	binance := prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "binance",
+		Help: "binance symbols",
 	}, []string{"symbol"})
 
 	c := gron.New()
@@ -68,7 +68,7 @@ func main() {
 		for _, item := range result {
 			if strings.Contains(item.Symbol, "USDT") {
 				price, _ := strconv.ParseFloat(item.Price, 64)
-				symbol.WithLabelValues(item.Symbol).Set(price)
+				binance.WithLabelValues(item.Symbol).Set(price)
 			}
 		}
 	})
@@ -76,7 +76,7 @@ func main() {
 	defer c.Stop()
 
 	// Registration Indicator Information
-	prometheus.MustRegister(symbol)
+	prometheus.MustRegister(binance)
 
 	// Expose
 	level.Info(logger).Log("msg", "Listening on address", "address", *listenAddress)
