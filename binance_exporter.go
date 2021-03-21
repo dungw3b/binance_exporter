@@ -33,6 +33,7 @@ func main() {
 		listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":9101").String()
 		metricsPath   = kingpin.Flag("web.telemetry-path", "Path under which to expose metrics.").Default("/metrics").String()
 		intervalQuery = kingpin.Flag("binance.api-interval", "Interval query Binance API.").Default("10").Int()
+		testUpTrend   = kingpin.Flag("binance.testUpTrend", "Test uptrend trigger.").Default("false").Bool()
 	)
 
 	promlogConfig := &promlog.Config{}
@@ -70,6 +71,10 @@ func main() {
 				price, _ := strconv.ParseFloat(item.Price, 64)
 				binance.WithLabelValues(item.Symbol).Set(price)
 			}
+		}
+
+		if *testUpTrend {
+			binance.WithLabelValues("TEST-USDT").Set(float64(time.Now().UTC().Second()))
 		}
 	})
 	c.Start()
