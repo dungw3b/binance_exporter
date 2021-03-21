@@ -74,7 +74,7 @@ func main() {
 		}
 
 		if *testUpTrend {
-			binance.WithLabelValues("TEST-USDT").Set(float64(time.Now().UTC().Second()))
+			binance.WithLabelValues("TEST-USDT").Set(float64(time.Now().UTC().Unix()))
 		}
 	})
 	c.Start()
