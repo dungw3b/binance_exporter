@@ -46,8 +46,8 @@ func main() {
 	level.Info(logger).Log("msg", "Starting binance_exporter")
 
 	binance := prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "binance",
-		Help: "binance symbols",
+		Name: "binance_usdt",
+		Help: "binance symbol pricing in usdt",
 	}, []string{"symbol"})
 
 	c := gron.New()
